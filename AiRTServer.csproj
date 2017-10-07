@@ -33,7 +33,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MySql.Data, Version=6.8.7.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL" />
+    <Reference Include="MongoDB.Bson">
+      <HintPath>..\..\..\Downloads\net45\MongoDB.Bson.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Driver">
+      <HintPath>..\..\..\Downloads\net45\MongoDB.Driver.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Driver.Core">
+      <HintPath>..\..\..\Downloads\net45\MongoDB.Driver.Core.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.configuration" />
@@ -51,12 +59,13 @@
     <Compile Include="Entities\Units\BarbarianWorker.cs" />
     <Compile Include="Entities\Units\Unit.cs" />
     <Compile Include="Entities\Units\Worker.cs" />
-    <Compile Include="Entities\World.cs" />
+    <Compile Include="Entities\WorldPosition.cs" />
     <Compile Include="EntityManager.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="NetManager.cs" />
     <Compile Include="Packet.cs" />
     <Compile Include="PacketProcessor.cs" />
+    <Compile Include="ServerPacketProcessor.cs" />
     <Compile Include="Packets\DiePacket.cs" />
     <Compile Include="Packets\ActionPacket.cs" />
     <Compile Include="Packets\AnimPacket.cs" />

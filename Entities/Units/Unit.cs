@@ -56,7 +56,7 @@ namespace AiRTServer.Entities.Units
             {
                     if (Game.Instance.PlayerManager.getPlayerById(Player).isHostile(p_Cible.Player) == HOSTILITY.ENEMY)
                     {
-                        Game.Instance.PlayerManager.sendToAll(new AnimPacket(this.Id, "attack1", 1.0));
+                        Game.Instance.PlayerManager.sendToAll(new AnimPacket(this.Id, "attack", 1.0));
                         Action = "Attack";
                     }
                     else

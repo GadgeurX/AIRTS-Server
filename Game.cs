@@ -20,9 +20,9 @@ namespace AiRTServer
         {
             m_Instance = this;
             m_PlayerManager = new PlayerManager();
-            m_Net = new NetManager();
+            m_Net = new NetManager(new ServerPacketProcessor());
             var appSettings = ConfigurationManager.AppSettings;
-            m_DataManager = new DataManager(appSettings["DBhost"], appSettings["DBuser"], appSettings["DBpassword"], appSettings["DBdb"]);
+            m_DataManager = new DataManager(appSettings["DBhost"], appSettings["DBdb"]);
             m_NetworkThread = new Thread(updateNetwork);
             m_EntityManager = new EntityManager();
         }

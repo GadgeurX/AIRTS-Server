@@ -1,4 +1,5 @@
-﻿using MySql.Data.MySqlClient;
+﻿using MongoDB.Bson;
+using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,35 +11,32 @@ namespace AiRTServer
     public class DataManager
     {
         String m_Ip;
-        String m_User;
-        String m_Mdp;
         String m_DataBase;
-        MySqlConnection m_SqlConnection;
+        MongoClient m_Connection;
+        IMongoDatabase m_AirtsDb;
+        IMongoCollection<BsonDocument> m_UsersCollection;
         bool isConnect = false;
 
-        public DataManager(String p_Ip, String p_User, String p_Mdp, String p_DataBase)
+        public DataManager(String p_Ip, String p_DataBase)
         {
             m_Ip = p_Ip;
-            m_User = p_User;
-            m_Mdp = p_Mdp;
             m_DataBase = p_DataBase;
         }
 
         public void init()
         {
             string connectionString;
-            connectionString = "SERVER=" + m_Ip + ";" + "DATABASE=" +
-            m_DataBase + ";" + "UID=" + m_User + ";" + "PASSWORD=" + m_Mdp + ";";
-
-            m_SqlConnection = new MySqlConnection(connectionString);
+            connectionString = "mongodb://" + m_Ip + ":27017";
             try
             {
+                m_Connection = new MongoClient(connectionString);
                 Console.WriteLine("[INFO] Database connecting...");
-                m_SqlConnection.Open();
+                m_AirtsDb = m_Connection.GetDatabase(m_DataBase);
+                m_UsersCollection = m_AirtsDb.GetCollection<BsonDocument>("Users");
                 Console.WriteLine("[INFO] Database connected");
                 isConnect = true;
             }
-            catch (MySqlException)
+            catch (Exception)
             {
                 isConnect = false;
                 Console.WriteLine("[ERROR] Error when database connection");
@@ -53,15 +51,14 @@ namespace AiRTServer
 
         public Boolean LoginPlayer(String p_Email, String p_Mdp)
         {
-            string query = "SELECT id FROM Player WHERE email='" + p_Email + "' AND mdp='" + p_Mdp + "';";
-
-            Boolean isUser = false;
-            MySqlCommand cmd = new MySqlCommand(query, m_SqlConnection);
+            bool isUser = false;
             try
             {
-                MySqlDataReader dataReader = cmd.ExecuteReader();
-                isUser = dataReader.Read();
-                dataReader.Close();
+                var filter = new BsonDocument();
+                filter.Add("email", p_Email);
+                filter.Add("pwd", p_Mdp);
+                var l_Result = m_UsersCollection.Find(filter).ToList();
+                isUser = l_Result.Count > 0;
             }
             catch (Exception)
             {
@@ -72,17 +69,18 @@ namespace AiRTServer
 
         public PlayerData LoadPlayer(String p_Email, String p_Mdp)
         {
-            string query = "SELECT * FROM Player WHERE email='" + p_Email + "' AND mdp='" + p_Mdp + "';";
-
-            MySqlCommand cmd = new MySqlCommand(query, m_SqlConnection);
             PlayerData player = null;
             try
             {
-                MySqlDataReader dataReader = cmd.ExecuteReader();
-
-                dataReader.Read();
-                player = new PlayerData((int)dataReader["id"], (String)dataReader["email"], (String)dataReader["login"], (String)dataReader["mdp"]);
-                dataReader.Close();
+                var filter = new BsonDocument();
+                filter.Add("email", p_Email);
+                filter.Add("pwd", p_Mdp);
+                var l_Result = m_UsersCollection.Find(filter).ToList();
+                if (l_Result.Count > 0)
+                {
+                    var dataReader = l_Result[0];
+                    player = new PlayerData((int)dataReader["id"], (String)dataReader["email"], (String)dataReader["login"], (String)dataReader["pwd"]);
+                }
             }
             catch(Exception)
             {

@@ -37,6 +37,7 @@ namespace AiRTServer
             m_Angle = 180.0;
             m_Watch = new Stopwatch();
             m_ActionDefinition = new Dictionary<string, ActionFunction>();
+            m_Life = 1;
         }
 
         public Entity clone(int p_Id, int p_Player, Vector3D p_Position)

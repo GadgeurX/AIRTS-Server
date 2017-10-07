@@ -57,6 +57,26 @@ namespace AiRTServer
             });
         }
 
+        public static void SendAsync(Packet paquet, Socket p_Socket)
+        {
+            Task.Run(() => {
+                lock (p_Socket)
+                {
+                    try
+                    {
+                        NetworkStream stream = new NetworkStream(p_Socket);
+                        BinaryFormatter bf = new BinaryFormatter();
+                        bf.Serialize(stream, paquet);
+                        stream.Flush();
+                    }
+                    catch (Exception e)
+                    {
+                        throw new Exception("Connection lost");
+                    }
+                }
+            });
+        }
+
         public static Packet Receive(Socket p_Socket)
         {
             Packet p = null;

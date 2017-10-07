@@ -18,7 +18,6 @@ namespace AiRTServer
         public EntityManager()
         {
             m_Entities = new List<Entity>();
-            this.addEntity(new World(new Vector3D(0, 0, 0)));
             this.addEntity(new BarbarianWorker(0, -1, new Vector3D(0, 0, 0)));
             this.addEntity(new BarbarianWorker(6, 6, new Vector3D(1, 0, 0)));
         }
@@ -44,8 +43,9 @@ namespace AiRTServer
 
         public void update()
         {
-            foreach (Entity l_Entity in m_Entities)
+            for (int i = m_Entities.Count - 1; i >= 0; i--)
             {
+                Entity l_Entity = m_Entities[i];
                 if (l_Entity.Life <= 0)
                 {
                     this.removeEntity(l_Entity);

@@ -15,10 +15,10 @@ namespace AiRTServer
         PlayerManager m_PlayerManager;
         PacketProcessor m_PacketProcessor;
 
-        public NetManager()
+        public NetManager(PacketProcessor p_PacketProcessor)
         {
             m_PlayerManager = Game.Instance.PlayerManager;
-            m_PacketProcessor = new PacketProcessor();
+            m_PacketProcessor = p_PacketProcessor;
         }
 
         public void init(int p_Port)
@@ -59,7 +59,7 @@ namespace AiRTServer
                         m_PlayerManager.removePlayer(m_PlayerManager.getPlayer(l_Socket));
                     }
                     else
-                        Task.Run(() => { m_PacketProcessor.Processor[l_Packet.Type](l_Packet, m_PlayerManager.getPlayer(l_Socket)); });
+                        Task.Run(() => { m_PacketProcessor.Processor()[l_Packet.Type](l_Packet, m_PlayerManager.getPlayer(l_Socket)); });
                 }
             }
         }
