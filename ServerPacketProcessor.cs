@@ -11,7 +11,7 @@ using System.Windows.Media.Media3D;
 
 namespace AiRTServer
 {
-    public class ServerPacketProcessor : PacketProcessor
+    public class ServerPacketProcessor : IPacketProcessor
     {
         Dictionary<PacketType, ProcessFunction> m_Processor;
 
@@ -21,21 +21,22 @@ namespace AiRTServer
 
         public ServerPacketProcessor()
         {
-            m_Processor = new Dictionary<PacketType, ProcessFunction>();
-
-            m_Processor[PacketType.LOGIN] = loginProcess;
-            m_Processor[PacketType.SELECTION] = selectionProcess;
-            m_Processor[PacketType.ACTION] = actionProcess;
+            m_Processor = new Dictionary<PacketType, ProcessFunction>
+            {
+                [PacketType.LOGIN] = LoginProcess,
+                [PacketType.SELECTION] = SelectionProcess,
+                [PacketType.ACTION] = ActionProcess
+            };
         }
 
-        private void loginProcess(Packet p_Packet, Player p_Player)
+        private void LoginProcess(Packet p_Packet, Player p_Player)
         {
             LoginPacket l_Packet = (LoginPacket)p_Packet;
             if (Game.Instance.DataManager.LoginPlayer(l_Packet.Email, l_Packet.Mdp))
             {
                 p_Player.Data = Game.Instance.DataManager.LoadPlayer(l_Packet.Email, l_Packet.Mdp);
                 Console.WriteLine("[INFO] " + p_Player.Data.Login + " is connected");
-                Game.Instance.EntityManager.addEntity(new BarbarianWorker(0, p_Player.Data.Id, new Vector3D(0,0,0)));
+                Game.Instance.EntityManager.AddEntity(new BarbarianWorker(0, p_Player.Data.Id, new Vector3D(0,0,0)));
                 Packet.SendAsync(new OkPacket(), p_Player);
             }
             else
@@ -45,21 +46,21 @@ namespace AiRTServer
             }
         }
 
-        private void selectionProcess(Packet p_Packet, Player p_Player)
+        private void SelectionProcess(Packet p_Packet, Player p_Player)
         {
             SelectionPacket l_Packet = (SelectionPacket)p_Packet;
             p_Player.Selection.Clear();
             Console.WriteLine("[INFO] " + p_Player.Data.Login + " selection:");
             foreach (int l_Id in l_Packet.Selection)
             {
-                Entity m_Entity = Game.Instance.EntityManager.getEntity(l_Id);
+                Entity m_Entity = Game.Instance.EntityManager.GetEntity(l_Id);
                 Console.WriteLine("  -  " + m_Entity.Id);
-                if (p_Player.isHostile(m_Entity.Player) == HOSTILITY.MY)
+                if (p_Player.IsHostile(m_Entity.Player) == HOSTILITY.MY)
                     p_Player.Selection.Add(m_Entity);
             }
         }
 
-        private void actionProcess(Packet p_Packet, Player p_Player)
+        private void ActionProcess(Packet p_Packet, Player p_Player)
         {
             ActionPacket l_Packet = (ActionPacket)p_Packet;
             foreach (Entity l_Entity in p_Player.Selection)
@@ -68,7 +69,7 @@ namespace AiRTServer
                 if (l_Packet.Id == 0)
                     l_Entity.Cible = new WorldPosition(new Vector3D(l_Packet.Pos_X, 0, l_Packet.Pos_Y));
                 else
-                    l_Entity.Cible = Game.Instance.EntityManager.getEntity(l_Packet.Id);
+                    l_Entity.Cible = Game.Instance.EntityManager.GetEntity(l_Packet.Id);
             }
         }
     }

@@ -51,7 +51,7 @@ namespace AiRTServer
                             Console.WriteLine("[INFO] " + p_Player.Data.Login + " disconnected");
                         else
                             Console.WriteLine("[INFO] Client disconnected");
-                        Game.Instance.PlayerManager.removePlayer(p_Player);
+                        Game.Instance.PlayerManager.RemovePlayer(p_Player);
                     }
                 }
             });
@@ -84,9 +84,10 @@ namespace AiRTServer
             {
                 NetworkStream stream = new NetworkStream(p_Socket);
 
-                BinaryFormatter bf = new BinaryFormatter();
-                bf.Binder = new VersionDeserializationBinder();
-
+                BinaryFormatter bf = new BinaryFormatter
+                {
+                    Binder = new VersionDeserializationBinder()
+                };
                 p = (Packet)bf.Deserialize(stream);
             }
             catch (Exception)

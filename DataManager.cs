@@ -23,7 +23,7 @@ namespace AiRTServer
             m_DataBase = p_DataBase;
         }
 
-        public void init()
+        public void Init()
         {
             string connectionString;
             connectionString = "mongodb://" + m_Ip + ":27017";
@@ -43,10 +43,10 @@ namespace AiRTServer
             }
         }
 
-        public void update()
+        public void Update()
         {
             if (!isConnect)
-                init();
+                Init();
         }
 
         public Boolean LoginPlayer(String p_Email, String p_Mdp)
@@ -54,9 +54,11 @@ namespace AiRTServer
             bool isUser = false;
             try
             {
-                var filter = new BsonDocument();
-                filter.Add("email", p_Email);
-                filter.Add("pwd", p_Mdp);
+                var filter = new BsonDocument
+                {
+                    { "email", p_Email },
+                    { "pwd", p_Mdp }
+                };
                 var l_Result = m_UsersCollection.Find(filter).ToList();
                 isUser = l_Result.Count > 0;
             }
@@ -72,9 +74,11 @@ namespace AiRTServer
             PlayerData player = null;
             try
             {
-                var filter = new BsonDocument();
-                filter.Add("email", p_Email);
-                filter.Add("pwd", p_Mdp);
+                var filter = new BsonDocument
+                {
+                    { "email", p_Email },
+                    { "pwd", p_Mdp }
+                };
                 var l_Result = m_UsersCollection.Find(filter).ToList();
                 if (l_Result.Count > 0)
                 {

@@ -7,7 +7,7 @@ namespace AiRTServer
     public class Game
     {
         public Boolean m_Running;
-        public Boolean isRunning { get { return m_Running; } }
+        public Boolean IsRunning { get { return m_Running; } }
 
         NetManager m_Net;
         PlayerManager m_PlayerManager;
@@ -23,32 +23,32 @@ namespace AiRTServer
             m_Net = new NetManager(new ServerPacketProcessor());
             var appSettings = ConfigurationManager.AppSettings;
             m_DataManager = new DataManager(appSettings["DBhost"], appSettings["DBdb"]);
-            m_NetworkThread = new Thread(updateNetwork);
+            m_NetworkThread = new Thread(UpdateNetwork);
             m_EntityManager = new EntityManager();
         }
 
-        public void init()
+        public void Init()
         {
             var appSettings = ConfigurationManager.AppSettings;
-            m_Net.init(int.Parse(appSettings["port"]));
-            m_DataManager.init();
+            m_Net.Init(int.Parse(appSettings["port"]));
+            m_DataManager.Init();
             m_Running = true;
             m_NetworkThread.Start();
             Console.WriteLine("[INFO] Game initialized");
         }
 
-        public void run()
+        public void Run()
         {
-            m_DataManager.update();
-            m_EntityManager.update();
+            m_DataManager.Update();
+            m_EntityManager.Update();
             Thread.Sleep(14);
         }
 
-        public void updateNetwork()
+        public void UpdateNetwork()
         {
             while (m_Running)
             {
-                m_Net.update();
+                m_Net.Update();
             }
         }
 

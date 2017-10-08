@@ -23,7 +23,7 @@ namespace AiRTServer.Entities.Units
             Cost.Gold.Amount = 10;
             this.SellValue = new Resource();
             SellValue.Gold.Amount = 2;
-            Action = null;
+            Action = EntityAction.IDLE;
             Cible = null;
             Ki = 0;
             this.Range = 1;

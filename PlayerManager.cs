@@ -16,15 +16,15 @@ namespace AiRTServer
             m_Players = new HashSet<Player>();
         }
 
-        public void sendToAll(Packet p_Packet)
+        public void SendToAll(Packet p_Packet)
         {
-            foreach (Player l_Player in this.getConnectedPlayer())
+            foreach (Player l_Player in this.GetConnectedPlayer())
             {
                 Packet.SendAsync(p_Packet, l_Player);
             }
         }
 
-        public void addPlayer(Player p_Player)
+        public void AddPlayer(Player p_Player)
         {
             lock (m_Players)
             {
@@ -32,7 +32,7 @@ namespace AiRTServer
             }
         }
 
-        public void removePlayer(Player p_Player)
+        public void RemovePlayer(Player p_Player)
         {
             lock (m_Players)
             {
@@ -40,12 +40,12 @@ namespace AiRTServer
             }
         }
 
-        public HashSet<Player> getPlayers()
+        public HashSet<Player> GetPlayers()
         {
             return m_Players;
         }
 
-        public Player getPlayer(Socket p_Socket)
+        public Player GetPlayer(Socket p_Socket)
         {
             foreach (Player l_Player in m_Players)
             {
@@ -55,9 +55,9 @@ namespace AiRTServer
             return null;
         }
 
-        public Player getPlayerById(int p_Id)
+        public Player GetPlayerById(int p_Id)
         {
-            foreach (Player l_Player in getConnectedPlayer())
+            foreach (Player l_Player in GetConnectedPlayer())
             {
                 if (l_Player.Data.Id == p_Id)
                     return l_Player;
@@ -65,7 +65,7 @@ namespace AiRTServer
             return null;
         }
 
-        public List<Player> getConnectedPlayer()
+        public List<Player> GetConnectedPlayer()
         {
             return (from Player in m_Players
                     where (Player.Data) != null

@@ -14,12 +14,12 @@ namespace AiRTServer
             Game l_Game = new Game();
             Console.WriteLine("[INFO] Game created");
             Console.WriteLine("[INFO] Game initializing...");
-            l_Game.init();
+            l_Game.Init();
             Console.WriteLine("[INFO] Start game");
             Console.WriteLine("-------------------------------------");
-            while (l_Game.isRunning)
+            while (l_Game.IsRunning)
             {
-                l_Game.run();
+                l_Game.Run();
             }
         }
     }

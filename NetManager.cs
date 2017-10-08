@@ -13,15 +13,15 @@ namespace AiRTServer
         Socket m_SocketServer;
         List<Socket> m_ReadClients;
         PlayerManager m_PlayerManager;
-        PacketProcessor m_PacketProcessor;
+        IPacketProcessor m_PacketProcessor;
 
-        public NetManager(PacketProcessor p_PacketProcessor)
+        public NetManager(IPacketProcessor p_PacketProcessor)
         {
             m_PlayerManager = Game.Instance.PlayerManager;
             m_PacketProcessor = p_PacketProcessor;
         }
 
-        public void init(int p_Port)
+        public void Init(int p_Port)
         {
             IPAddress ipAddress = IPAddress.Any;
             IPEndPoint localEndPoint = new IPEndPoint(ipAddress, p_Port);
@@ -32,11 +32,13 @@ namespace AiRTServer
             Console.WriteLine("[INFO] Network listen to " + localEndPoint.Address.ToString() + ":" + p_Port);
         }
 
-        public void update()
+        public void Update()
         {
-            m_ReadClients = new List<Socket>();
-            m_ReadClients.Add(m_SocketServer);
-            foreach (Player l_Player in m_PlayerManager.getPlayers())
+            m_ReadClients = new List<Socket>
+            {
+                m_SocketServer
+            };
+            foreach (Player l_Player in m_PlayerManager.GetPlayers())
             {
                 m_ReadClients.Add(l_Player.SocketClient);
             }
@@ -46,28 +48,28 @@ namespace AiRTServer
             foreach (Socket l_Socket in m_ReadClients)
             {
                 if (l_Socket == m_SocketServer)
-                    newConnection();
+                    NewConnection();
                 else
                 {
                     Packet l_Packet = Packet.Receive(l_Socket);
                     if (l_Packet == null)
                     {
-                        if (m_PlayerManager.getPlayer(l_Socket).Data != null)
-                            Console.WriteLine("[INFO] " + m_PlayerManager.getPlayer(l_Socket).Data.Login + " disconnected");
+                        if (m_PlayerManager.GetPlayer(l_Socket).Data != null)
+                            Console.WriteLine("[INFO] " + m_PlayerManager.GetPlayer(l_Socket).Data.Login + " disconnected");
                         else
                             Console.WriteLine("[INFO] Client disconnected");
-                        m_PlayerManager.removePlayer(m_PlayerManager.getPlayer(l_Socket));
+                        m_PlayerManager.RemovePlayer(m_PlayerManager.GetPlayer(l_Socket));
                     }
                     else
-                        Task.Run(() => { m_PacketProcessor.Processor()[l_Packet.Type](l_Packet, m_PlayerManager.getPlayer(l_Socket)); });
+                        Task.Run(() => { m_PacketProcessor.Processor()[l_Packet.Type](l_Packet, m_PlayerManager.GetPlayer(l_Socket)); });
                 }
             }
         }
 
-        private void newConnection()
+        private void NewConnection()
         {
             Console.WriteLine("[INFO] New client connection");
-            m_PlayerManager.addPlayer(new Player(m_SocketServer.Accept()));
+            m_PlayerManager.AddPlayer(new Player(m_SocketServer.Accept()));
         }
 
     }

@@ -30,7 +30,7 @@ namespace AiRTServer
             m_Selection = new List<Entity>();
         }
 
-        public HOSTILITY isHostile(int p_Player)
+        public HOSTILITY IsHostile(int p_Player)
         {
             if (p_Player == -1)
                 return HOSTILITY.NEUTRAL;

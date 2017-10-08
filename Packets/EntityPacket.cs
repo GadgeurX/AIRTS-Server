@@ -12,11 +12,11 @@ namespace AiRTServer.Packets
     {
         int m_Id;
         double m_PositionX;
-        double m_PositionY;
+        double m_PositionZ;
         String m_Type;
         double m_Angle;
         double m_SizeX;
-        double m_SizeY;
+        double m_SizeZ;
         HOSTILITY m_Hostile;
 
         public int Id
@@ -71,16 +71,16 @@ namespace AiRTServer.Packets
             }
         }
 
-        public double PositionY
+        public double PositionZ
         {
             get
             {
-                return m_PositionY;
+                return m_PositionZ;
             }
 
             set
             {
-                m_PositionY = value;
+                m_PositionZ = value;
             }
         }
 
@@ -97,16 +97,16 @@ namespace AiRTServer.Packets
             }
         }
 
-        public double SizeY
+        public double SizeZ
         {
             get
             {
-                return m_SizeY;
+                return m_SizeZ;
             }
 
             set
             {
-                m_SizeY = value;
+                m_SizeZ = value;
             }
         }
 
@@ -123,15 +123,15 @@ namespace AiRTServer.Packets
             }
         }
 
-        public EntityPacket(int p_Id, double p_PositionX, double p_PositionY, String p_Type, double p_Angle, double p_SizeX, double p_SizeY) : base(PacketType.ENTITY)
+        public EntityPacket(Entity p_Entity) : base(PacketType.ENTITY)
         {
-            m_Id = p_Id;
-            m_PositionX = p_PositionX;
-            m_PositionY = p_PositionY;
-            m_Type = p_Type;
-            m_Angle = p_Angle;
-            m_SizeX = p_SizeX;
-            m_SizeY = p_SizeY;
+            m_Id = p_Entity.Id;
+            m_PositionX = p_Entity.Position.X;
+            m_PositionZ = p_Entity.Position.Z;
+            m_Type = p_Entity.GetType().Name;
+            m_Angle = p_Entity.Angle;
+            m_SizeX = p_Entity.Size.X;
+            m_SizeZ = p_Entity.Size.Z;
         }
     }
 }

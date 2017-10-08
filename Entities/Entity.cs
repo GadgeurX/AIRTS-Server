@@ -11,6 +11,14 @@ namespace AiRTServer
 {
     public abstract class Entity
     {
+        public enum EntityAction
+        {
+            MOVE,
+            ATTACK,
+            DEFAULT,
+            IDLE
+        }
+
         int m_Id;
         string m_ObjectName;
         double m_BuildTime, m_Life, m_MaxLife;
@@ -22,10 +30,10 @@ namespace AiRTServer
         double m_BaseDamage;
         double m_BaseArmor;
         Resource m_Cost, m_SellValue;
-        String m_Action;
+        EntityAction m_Action;
         Entity m_Cible;
         public delegate void ActionFunction(int p_AlphaMs, Entity p_Cible);
-        Dictionary<string, ActionFunction> m_ActionDefinition;
+        Dictionary<EntityAction, ActionFunction> m_ActionDefinition;
         double m_Ki;
         Stopwatch m_Watch;
 
@@ -36,7 +44,7 @@ namespace AiRTServer
             m_Position = p_Position;
             m_Angle = 180.0;
             m_Watch = new Stopwatch();
-            m_ActionDefinition = new Dictionary<string, ActionFunction>();
+            m_ActionDefinition = new Dictionary<EntityAction, ActionFunction>();
             m_Life = 1;
         }
 
@@ -49,7 +57,7 @@ namespace AiRTServer
             return l_Copy;
         }
 
-        public void addActionDefinition(String p_Action, ActionFunction p_Func)
+        public void addActionDefinition(EntityAction p_Action, ActionFunction p_Func)
         {
             m_ActionDefinition.Add(p_Action, p_Func);
         }
@@ -57,7 +65,7 @@ namespace AiRTServer
         public void update()
         {
             m_Watch.Stop();
-            if (m_Action != null)
+            if (m_Action != EntityAction.IDLE)
                 if (m_ActionDefinition.ContainsKey(m_Action))
                     m_ActionDefinition[m_Action]((int)m_Watch.ElapsedMilliseconds, m_Cible);
             m_Watch.Reset();
@@ -66,7 +74,7 @@ namespace AiRTServer
 
         public virtual void closeAction()
         {
-            m_Action = null;
+            m_Action = EntityAction.IDLE;
             m_Cible = null;
         }
 
@@ -234,7 +242,7 @@ namespace AiRTServer
             }
         }
 
-        public string Action
+        public EntityAction Action
         {
             get
             {
@@ -243,11 +251,7 @@ namespace AiRTServer
 
             set
             {
-                if (m_Action != null)
-                    lock (this)
-                        m_Action = value;
-                else
-                    m_Action = value;
+                m_Action = value;
             }
         }
 

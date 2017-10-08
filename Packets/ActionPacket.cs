@@ -9,12 +9,12 @@ namespace AiRTServer.Packets
     [Serializable()]
     public class ActionPacket : Packet
     {
-        String m_Action;
+        Entity.EntityAction m_Action;
         int m_Id;
         double m_posX;
         double m_posY;
 
-        public ActionPacket(String p_Action, int p_Id, double pos_X, double pos_Y) : base(PacketType.ACTION)
+        public ActionPacket(Entity.EntityAction p_Action, int p_Id, double pos_X, double pos_Y) : base(PacketType.ACTION)
         {
             m_Action = p_Action;
             m_Id = p_Id;
@@ -22,7 +22,7 @@ namespace AiRTServer.Packets
             m_posY = pos_Y;
         }
 
-        public string Action
+        public Entity.EntityAction Action
         {
             get
             {
