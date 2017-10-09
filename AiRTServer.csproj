@@ -9,9 +9,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>AiRTServer</RootNamespace>
     <AssemblyName>AiRTServer</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -64,7 +65,7 @@
     <Compile Include="Game.cs" />
     <Compile Include="NetManager.cs" />
     <Compile Include="Packet.cs" />
-    <Compile Include="PacketProcessor.cs" />
+    <Compile Include="IPacketProcessor.cs" />
     <Compile Include="ServerPacketProcessor.cs" />
     <Compile Include="Packets\DiePacket.cs" />
     <Compile Include="Packets\ActionPacket.cs" />

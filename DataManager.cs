@@ -86,8 +86,9 @@ namespace AiRTServer
                     player = new PlayerData((int)dataReader["id"], (String)dataReader["email"], (String)dataReader["login"], (String)dataReader["pwd"]);
                 }
             }
-            catch(Exception)
+            catch(Exception e)
             {
+                Console.WriteLine("[ERROR] " + e.Message);
                 isConnect = false;
             }
             return player;

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace AiRTServer.Packets
 {
     [Serializable()]
-    class LoginPacket : Packet
+    public class LoginPacket : Packet
     {
         String m_Email;
         String m_Mdp;

@@ -54,11 +54,12 @@ namespace AiRTServer
                     Packet l_Packet = Packet.Receive(l_Socket);
                     if (l_Packet == null)
                     {
-                        if (m_PlayerManager.GetPlayer(l_Socket).Data != null)
+                        if (m_PlayerManager.GetPlayer(l_Socket) != null && m_PlayerManager.GetPlayer(l_Socket).Data != null)
                             Console.WriteLine("[INFO] " + m_PlayerManager.GetPlayer(l_Socket).Data.Login + " disconnected");
                         else
                             Console.WriteLine("[INFO] Client disconnected");
-                        m_PlayerManager.RemovePlayer(m_PlayerManager.GetPlayer(l_Socket));
+                        if (m_PlayerManager.GetPlayer(l_Socket) != null)
+                            m_PlayerManager.RemovePlayer(m_PlayerManager.GetPlayer(l_Socket));
                     }
                     else
                         Task.Run(() => { m_PacketProcessor.Processor()[l_Packet.Type](l_Packet, m_PlayerManager.GetPlayer(l_Socket)); });

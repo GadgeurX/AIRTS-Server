@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace AiRTServer.Packets
 {
     [Serializable()]
-    class OkPacket : Packet
+    public class OkPacket : Packet
     {
         public OkPacket() : base(PacketType.OK)
         {

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace AiRTServer.Packets
 {
     [Serializable()]
-    class ErrorPacket : Packet
+    public class ErrorPacket : Packet
     {
         public ErrorPacket() : base(PacketType.ERROR)
         {

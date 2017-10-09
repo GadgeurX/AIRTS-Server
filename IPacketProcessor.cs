@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace AiRTServer
 {
     public delegate void ProcessFunction(Packet p_Packet, Player p_Player);
-    interface IPacketProcessor
+    public interface IPacketProcessor
     {
         Dictionary<PacketType, ProcessFunction> Processor();
     }
