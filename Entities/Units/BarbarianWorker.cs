@@ -9,7 +9,7 @@ namespace AiRTServer.Entities.Units
 {
     public class BarbarianWorker : Worker
     {
-        public BarbarianWorker(int p_Id, int p_Player, Vector3D p_Position) : base(p_Id, p_Player, p_Position)
+        public BarbarianWorker(int p_Player, Vector3D p_Position) : base(p_Player, p_Position)
         {
             this.ObjectName = "BarbarianWorker";
             this.Speed = 2.0;

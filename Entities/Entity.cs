@@ -37,9 +37,8 @@ namespace AiRTServer
         double m_Ki;
         Stopwatch m_Watch;
 
-        public Entity(int p_Id, int p_Player, Vector3D p_Position)
+        public Entity(int p_Player, Vector3D p_Position)
         {
-            m_Id = p_Id;
             m_Player = p_Player;
             m_Position = p_Position;
             m_Angle = 180.0;
@@ -48,10 +47,9 @@ namespace AiRTServer
             m_Life = 1;
         }
 
-        public Entity clone(int p_Id, int p_Player, Vector3D p_Position)
+        public Entity clone(int p_Player, Vector3D p_Position)
         {
             Entity l_Copy = (Entity)this.MemberwiseClone();
-            l_Copy.Id = p_Id;
             l_Copy.Player = p_Player;
             l_Copy.Position = p_Position;
             return l_Copy;
@@ -80,12 +78,7 @@ namespace AiRTServer
 
         public void onTakeDamage(Entity p_Entity, double p_Damage)
         {
-            Life -= p_Damage;
-            if (Life <= 0)
-            {
-                Life = 0;
-                p_Entity.closeAction();
-            }
+
         }
 
         public Vector3D Position
